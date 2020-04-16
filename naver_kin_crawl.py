@@ -48,14 +48,14 @@ def get_urls_doc(i):
     for question in questions[:]:
         url = question.find("a")["href"]
         urls.append(url)
-i = 1
+i = 1 # Iterating through web pages to extract all search result URLs
 while i <= 12:
     get_urls_doc((i-1)*10 + 1)
     i += 1
 print(len(urls))
 
 # 약사 답변
-driver.get("https://search.naver.com/search.naver?where=kin&query=%EC%BD%94%EB%A1%9C%EB%82%98&kin_sort=0&c_id=&c_name=             &sm=tab_opt&sec=1&title=0&answer=6&grade=0&choice=0&nso=so%3Add%2Ca%3Aall%2Cp%3Afrom20191201to20200131&ie=utf8")
+driver.get("https://search.naver.com/search.naver?where=kin&query=%EC%BD%94%EB%A1%9C%EB%82%98&kin_sort=0&c_id=&c_name=&sm=tab_opt&sec=1&title=0&answer=6&grade=0&choice=0&nso=so%3Add%2Ca%3Aall%2Cp%3Afrom20191201to20200131&ie=utf8")
 time.sleep(5)
 html = driver.page_source
 soup = bs(html, 'html.parser')
