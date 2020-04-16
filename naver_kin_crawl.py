@@ -12,28 +12,6 @@ import requests
 from selenium.common.exceptions import UnexpectedAlertPresentException
 from selenium.common.exceptions import NoSuchElementException
 
-def search_jisikin(query):
-    """지식인 검색"""
-    elem_search = driver.find_element_by_class_name("search_input")
-    elem_search_input = driver.find_element_by_class_name("search_btn")
-    elem_search.send_keys(query)
-    elem_search_input.click()
-
-def set_span(from_date, to_date):
-    """지식인에서 키워드 검색 이후 검색 결과 기간 설정"""
-    select_span = driver.find_element_by_class_name("selectbox-box")
-    span_input = driver.find_element_by_class_name("selectbox-notclose _nclicks:kin.dateinput selectbox-item selectbox-item-selected selectbox-item-over")
-    elem_from_date = driver.find_element_by_id("sel_from_date")
-    
-    select_span.click()
-    span_input.click()
-    elem_from_date.send_keys(Keys.DELETE)
-    elem_from_date.send_keys(from_date)
-    actions.send_keys(Keys.TAB).perform()
-    actions.send_keys(Keys.DELETE).perform()
-    actions.send_keys(to_date).perform()
-    actions.send_keys(Keys.Return).perform()
-
 driver = webdriver.Chrome('/chromedriver')
 urls = []
 
@@ -142,3 +120,26 @@ driver.close()
 data_ = zip(urls, q_title, q_content, answer, like, useful, haha, toobad, likead)
 df = pd.DataFrame(data = data_, columns=["url", "q_title", "q_content", "answer", "like", "useful", "haha", "toobad", "likead"])
 df.to_csv("file_name.csv")
+
+# etc
+
+def search_jisikin(query):
+    """지식인 검색"""
+    elem_search = driver.find_element_by_class_name("search_input")
+    elem_search_input = driver.find_element_by_class_name("search_btn")
+    elem_search.send_keys(query)
+    elem_search_input.click()
+
+def set_span(from_date, to_date):
+    """지식인에서 키워드 검색 이후 검색 결과 기간 설정"""
+    select_span = driver.find_element_by_class_name("selectbox-box")
+    span_input = driver.find_element_by_class_name("selectbox-notclose _nclicks:kin.dateinput selectbox-item selectbox-item-selected selectbox-item-over")
+    elem_from_date = driver.find_element_by_id("sel_from_date")  
+    select_span.click()
+    span_input.click()
+    elem_from_date.send_keys(Keys.DELETE)
+    elem_from_date.send_keys(from_date)
+    actions.send_keys(Keys.TAB).perform()
+    actions.send_keys(Keys.DELETE).perform()
+    actions.send_keys(to_date).perform()
+    actions.send_keys(Keys.Return).perform()
