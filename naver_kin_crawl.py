@@ -14,39 +14,21 @@ from selenium.common.exceptions import NoSuchElementException
 
 driver = webdriver.Chrome('/chromedriver')
 urls = []
+date = [] # list of dates for desired query span (year.mm.dd)
 
 # 지식인 검색 결과 URL 주소 추출
-# 의사 답변
-def get_urls_doc(i):
-    driver.get("https://search.naver.com/search.naver?where=kin&kin_display=10&qt=&title=0&&answer=2&grade=0&choice=0&sec=1&nso=so%3Ar%2Ca%3Aall%2Cp%3Afrom20191201to20200131&query=%EC%BD%94%EB%A1%9C%EB%82%98&c_id=&c_name=&sm=tab_pge&kin_start={}".format(i))
-    time.sleep(5)
-    html = driver.page_source
-    soup = bs(html, 'html.parser')
-    questions = soup.select("dt.question")
-    for question in questions[:]:
-        url = question.find("a")["href"]
-        urls.append(url)
-i = 1 # Iterating through web pages to extract all search result URLs
-while i <= 12:
-    get_urls_doc((i-1)*10 + 1)
-    i += 1
-print(len(urls))
-
-# 약사 답변
-driver.get("https://search.naver.com/search.naver?where=kin&query=%EC%BD%94%EB%A1%9C%EB%82%98&kin_sort=0&c_id=&c_name=&sm=tab_opt&sec=1&title=0&answer=6&grade=0&choice=0&nso=so%3Add%2Ca%3Aall%2Cp%3Afrom20191201to20200131&ie=utf8")
-time.sleep(5)
-html = driver.page_source
-soup = bs(html, 'html.parser')
-questions = soup.select("dt.question")
-for question in questions[:]:
-    url = question.find("a")["href"]
-    urls.append(url)
-print(len(urls))
-
-with open('file_name.txt', 'w') as f: # 수집한 주소들을 .txt로 저장
-    for item in urls:
-        f.write("%s\n" % item)
-
+for k in date[:]:
+    i = 1
+    while i <= 100:
+        driver.get("https://search.naver.com/search.naver?where=kin&kin_display=10&qt=&title=0&&answer=0&grade=0&choice=0&sec=0&nso=so%3Ar%2Ca%3Aall%2Cp%3Afrom{}to{}&query=%EC%BD%94%EB%A1%9C%EB%82%98+%EA%B0%80%EB%8A%A5%ED%95%9C%EA%B0%80%EC%9A%94&c_id=&c_name=&sm=tab_pge&kin_start={}".format (k, k, (i-1)*10 + 1))
+        time.sleep(3)
+        html = driver.page_source
+        soup = bs(html, 'html.parser')
+        questions = soup.select("dt.question")
+        for question in questions[:]:
+            url = question.find("a")["href"]
+            urls.append(url)
+        i = i + 1
 driver.close()
 
 # 지식인 Q&A 크롤링
